@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Standard-/Fallback-Sprache: DEUTSCH.
+  Übersetzungen liegen in values-en/ (Englisch) und values-es/ (Spanisch).
+  Neue Sprache hinzufügen: values-XX/strings.xml anlegen + Eintrag in
+  res/xml/locales_config.xml ergänzen. Debug-Texte bleiben bewusst im Code.
+-->
+<resources>
+    <string name="app_name">Pebbels APP</string>
+
+    <!-- Navigation / Tab-Titel -->
+    <string name="nav_values">Werte</string>
+    <string name="nav_info">Info</string>
+    <string name="tab_stats">Statistik</string>
+    <string name="tab_settings">Einstellungen</string>
+
+    <!-- Werte-Tab -->
+    <string name="values_history">VERLAUF</string>
+    <string name="values_count">%1$d Werte (%2$d h)</string>
+    <string name="values_last">Letzter Wert: %1$s</string>
+
+    <!-- Statistik-Tab -->
+    <string name="stats_range">ZEITRAUM</string>
+    <string name="stats_empty">Noch keine Werte im Zeitraum</string>
+    <string name="stats_metrics">KENNZAHLEN</string>
+    <string name="stats_mean">Mittelwert</string>
+    <string name="stats_sd">Std-Abweichung</string>
+    <string name="stats_cv">Variationskoeffizient</string>
+    <string name="stats_count">Werte</string>
+    <string name="stats_gmi">GMI (human)</string>
+    <string name="stats_gmi_note">GMI ist eine humanspezifische Näherung und für Hunde nur ein grober Anhaltspunkt.</string>
+
+    <!-- Info-Tab -->
+    <string name="info_title">Über Pebbels</string>
+    <string name="info_hello">Hallo, ich bin Pebbels</string>
+    <string name="info_dates">28. März 2014 – 25. Mai 2026 †</string>
+    <string name="info_story1">Diese App ist für Pebbels entstanden — eine Französische Bulldogge, die an einem Insulinom erkrankt war, einem insulinbildenden Tumor der Bauchspeicheldrüse. Über viele Monate haben ein CGM-Sensor und diese App geholfen, ihren Blutzucker rund um die Uhr im Blick zu behalten — und vermutlich mehrere nächtliche Krisen verhindert.</string>
+    <string name="info_story2">Was ihre Krankheit an Erfahrung und Lehrgeld gekostet hat, soll nun anderen Hunden und ihren Menschen helfen — damit niemand diesen Weg allein gehen muss.</string>
+    <string name="info_more">MEHR ERFAHREN</string>
+    <string name="info_more_text">Pebbels' ganze Geschichte, ehrliche Erfahrungen zum Insulinom, Glukose-Verläufe, Ernährung, Notfall-Wissen und Sensor-Tipps:</string>
+    <string name="info_open_website">Website öffnen</string>
+    <string name="info_free">Kostenlos, werbefrei, ohne Datensammlung.</string>
+
+    <!-- Einstellungen: Sensor koppeln -->
+    <string name="set_pair">SENSOR KOPPELN</string>
+    <string name="set_pin_label">Pairing-Code (4 Ziffern)</string>
+    <string name="set_connection">VERBINDUNG</string>
+    <string name="set_handshake">Handshake Phase %1$d</string>
+    <string name="common_start">Start</string>
+    <string name="common_stop">Stop</string>
+    <string name="set_switch">Wechsel</string>
+    <string name="set_reset">Reset</string>
+
+    <!-- Einstellungen: Hintergrund-Betrieb -->
+    <string name="set_bg">HINTERGRUND-BETRIEB</string>
+    <string name="set_bg_text">Damit die App auch bei ausgeschaltetem Bildschirm misst und Daten sendet, muss sie von der Akku-Optimierung ausgenommen sein. Sonst stoppt Android sie im Ruhezustand.</string>
+    <string name="set_bg_ok">✓ Akku-Optimierung ist deaktiviert — Hintergrund-Betrieb läuft.</string>
+    <string name="set_bg_warn">⚠ Akku-Optimierung ist noch aktiv — bitte deaktivieren.</string>
+    <string name="set_bg_btn">Akku-Optimierung deaktivieren</string>
+
+    <!-- Einstellungen: TIR-Grenzen -->
+    <string name="set_tir">STATISTIK — TIME IN RANGE</string>
+    <string name="set_tir_low">Untere Grenze: %1$d mg/dL</string>
+    <string name="set_tir_high">Obere Grenze: %1$d mg/dL</string>
+
+    <!-- Einstellungen: Alarme -->
+    <string name="set_hypo">UNTERZUCKER-ALARM</string>
+    <string name="set_hyper">ÜBERZUCKER-ALARM</string>
+    <string name="set_threshold">Schwelle: %1$d mg/dL</string>
+    <string name="set_alarm_behavior">ALARM-VERHALTEN</string>
+    <string name="set_repeat">Wiederhol-Intervall: %1$d min</string>
+    <string name="set_sound">Ton</string>
+    <string name="set_vibration">Vibration</string>
+    <string name="set_alarm_test">Alarm-Selbsttest</string>
+    <string name="set_stop_alarm">Stopp</string>
+    <string name="set_alarm_test_hint">Echter Test: schickt einen künstlichen Unterzucker-Wert durch die komplette Alarm-Logik (Schwelle, Auswertung, Ton, Vibration) — genau wie ein echter Messwert. Ton stoppt nach max. 5 s oder per Stopp.</string>
+
+    <!-- Einstellungen: Cloud-Upload -->
+    <string name="set_cloud">CLOUD-UPLOAD</string>
+    <string name="set_cloud_text">Schickt alle 5 Minuten die letzten 6 Stunden an dein persönliches Web-Dashboard. So siehst du die Werte auch unterwegs. QR-Code scannen, um das Dashboard zu öffnen:</string>
+    <string name="set_dash_open">Dashboard öffnen</string>
+    <string name="set_share_link">Link teilen</string>
+    <string name="set_dash_share_title">Dashboard-Link teilen</string>
+    <string name="set_last_upload">Letzter Upload: %1$s — %2$s</string>
+    <string name="set_no_upload">Noch kein Upload — läuft alle 5 Min</string>
+    <string name="set_upload_off">Upload ist deaktiviert</string>
+
+    <!-- Einstellungen: Daten sichern -->
+    <string name="set_backup">DATEN SICHERN</string>
+    <string name="set_backup_text">Sichert die komplette Glukose-Historie als Datei. Der Import fügt Werte aus einer Sicherung wieder hinzu — bereits vorhandene Werte werden dabei übersprungen.</string>
+    <string name="set_export_btn">Exportieren</string>
+    <string name="set_import_btn">Importieren</string>
+    <string name="set_exported">%1$d Werte gesichert</string>
+    <string name="set_export_err">Export-Fehler: %1$s</string>
+    <string name="set_imported">%1$d neue Werte importiert</string>
+    <string name="set_import_err">Import-Fehler: %1$s</string>
+
+    <!-- Einstellungen: Sprache -->
+    <string name="set_language">SPRACHE</string>
+    <string name="set_language_hint">Wird sofort übernommen. Auch in den System-Einstellungen wählbar.</string>
+    <string name="lang_system">System</string>
+
+    <!-- Einstellungen: Sensor-Auswahl -->
+    <string name="set_sensor">SENSOR</string>
+    <string name="set_sensor_hint">Welcher CGM-Sensor verwendet wird. Beim Wechsel wird die laufende Verbindung getrennt.</string>
+    <string name="set_aidex_hint">AiDEX wird über die Seriennummer (SN) vom Karton bzw. QR-Code erkannt — keine PIN nötig. SN eingeben, dann Start.</string>
+    <string name="set_aidex_pair">Neuer Sensor</string>
+    <string name="set_calib">KALIBRIERUNG</string>
+    <string name="set_calib_hint">Manuellen Messwert (Fingerstick/Blutzucker) eingeben — die App nimmt die Differenz zum aktuellen Sensorwert als Korrektur für alle folgenden Werte. Pro Sensor getrennt.</string>
+    <string name="set_calib_status">Aktueller Wert: %1$s mg/dL   ·   Korrektur: %2$s mg/dL</string>
+    <string name="set_calib_label">Messwert (mg/dL)</string>
+    <string name="set_calib_do">Kalibrieren</string>
+    <string name="set_calib_reset">Zurücksetzen</string>
+    <string name="set_aidex_sn_label">Seriennummer (SN)</string>
+    <string name="set_new_sensor">Neuer Sensor</string>
+    <string name="set_new_sensor_text">Verwirft die alte Kopplung und baut die Verbindung mit dem eingegebenen Pairing-Code neu auf. Der Glukose-Verlauf bleibt erhalten.</string>
+    <string name="common_cancel">Abbrechen</string>
+</resources>

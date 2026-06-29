@@ -1,0 +1,24 @@
+.idea/
+.gradle/
+build/
+app/build/
+local.properties
+*.iml
+.DS_Store
+captures/
+.externalNativeBuild/
+.cxx/
+
+# Kotlin Multiplatform
+.kotlin/
+
+# Xcode (user-specific / build)
+xcuserdata/
+*.xcuserstate
+DerivedData/
+*.hprof
+
+# Release-Artefakte (via GitHub Releases, nicht ins Repo)
+app/release/
+*.apk
+*.aab

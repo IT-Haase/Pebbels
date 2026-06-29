@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Traducción al español. El idioma predeterminado/de respaldo es el alemán (values/). -->
+<resources>
+    <string name="app_name">Pebbels APP</string>
+
+    <string name="nav_values">Valores</string>
+    <string name="nav_info">Info</string>
+    <string name="tab_stats">Estadísticas</string>
+    <string name="tab_settings">Ajustes</string>
+
+    <string name="values_history">HISTORIAL</string>
+    <string name="values_count">%1$d valores (%2$d h)</string>
+    <string name="values_last">Último valor: %1$s</string>
+    <string name="sensor_day">Sensor · día %1$d/10</string>
+    <string name="sensor_grace">Sensor por caducar</string>
+    <string name="sensor_expired">Sensor caducado</string>
+
+    <string name="stats_range">PERÍODO</string>
+    <string name="stats_empty">Aún no hay valores en el período</string>
+    <string name="stats_metrics">MÉTRICAS</string>
+    <string name="stats_mean">Media</string>
+    <string name="stats_sd">Desviación estándar</string>
+    <string name="stats_cv">Coeficiente de variación</string>
+    <string name="stats_count">Valores</string>
+    <string name="stats_gmi">GMI (humano)</string>
+    <string name="stats_gmi_note">El GMI es una aproximación específica para humanos y solo una orientación aproximada para perros.</string>
+
+    <string name="info_title">Sobre Pebbels</string>
+    <string name="info_hello">Hola, soy Pebbels</string>
+    <string name="info_dates">28 de marzo de 2014 – 25 de mayo de 2026 †</string>
+    <string name="info_story1">Esta aplicación nació para Pebbels — una bulldog francesa que padecía un insulinoma, un tumor del páncreas que produce insulina. Durante muchos meses, un sensor CGM y esta aplicación ayudaron a vigilar su glucosa las 24 horas — y probablemente evitaron varias crisis nocturnas.</string>
+    <string name="info_story2">Lo que su enfermedad costó en experiencia y duras lecciones debe ahora ayudar a otros perros y a sus personas — para que nadie tenga que recorrer este camino solo.</string>
+    <string name="info_more">MÁS INFORMACIÓN</string>
+    <string name="info_more_text">Toda la historia de Pebbels, experiencias honestas sobre el insulinoma, gráficas de glucosa, alimentación, conocimientos de emergencia y consejos sobre sensores:</string>
+    <string name="info_open_website">Abrir el sitio web</string>
+    <string name="info_free">Gratis, sin anuncios, sin recopilación de datos.</string>
+
+    <string name="set_pair">VINCULAR SENSOR</string>
+    <string name="set_pin_label">Código de vinculación (4 dígitos)</string>
+    <string name="set_connection">CONEXIÓN</string>
+    <string name="set_handshake">Fase de handshake %1$d</string>
+    <string name="common_start">Iniciar</string>
+    <string name="common_stop">Detener</string>
+    <string name="set_switch">Cambiar</string>
+    <string name="set_reset">Reiniciar</string>
+
+    <string name="set_bg">FUNCIONAMIENTO EN SEGUNDO PLANO</string>
+    <string name="set_bg_text">Para que la aplicación siga midiendo y enviando datos con la pantalla apagada, debe estar excluida de la optimización de batería. De lo contrario, Android la detiene en reposo.</string>
+    <string name="set_bg_ok">✓ La optimización de batería está desactivada — el funcionamiento en segundo plano está activo.</string>
+    <string name="set_bg_warn">⚠ La optimización de batería sigue activa — desactívala, por favor.</string>
+    <string name="set_bg_btn">Desactivar la optimización de batería</string>
+
+    <string name="set_tir">ESTADÍSTICAS — TIME IN RANGE</string>
+    <string name="set_tir_low">Límite inferior: %1$d mg/dL</string>
+    <string name="set_tir_high">Límite superior: %1$d mg/dL</string>
+
+    <string name="set_hypo">ALARMA DE HIPOGLUCEMIA</string>
+    <string name="set_hyper">ALARMA DE HIPERGLUCEMIA</string>
+    <string name="set_threshold">Umbral: %1$d mg/dL</string>
+    <string name="set_alarm_behavior">COMPORTAMIENTO DE LA ALARMA</string>
+    <string name="set_repeat">Intervalo de repetición: %1$d min</string>
+    <string name="set_sound">Sonido</string>
+    <string name="set_vibration">Vibración</string>
+    <string name="set_alarm_test">Autoprueba de alarma</string>
+    <string name="set_stop_alarm">Detener</string>
+    <string name="set_alarm_test_hint">Prueba real: envía un valor bajo de glucosa simulado a través de toda la lógica de alarma (umbral, evaluación, sonido, vibración) — igual que una lectura real. El sonido se detiene tras máx. 5 s o con Detener.</string>
+
+    <string name="set_cloud">SUBIDA A LA NUBE</string>
+    <string name="set_cloud_text">Envía las últimas 6 horas a tu panel web personal cada 5 minutos, para que también veas los valores en cualquier lugar. Escanea el código QR para abrir el panel:</string>
+    <string name="set_dash_open">Abrir el panel</string>
+    <string name="set_share_link">Compartir enlace</string>
+    <string name="set_dash_share_title">Compartir enlace del panel</string>
+    <string name="set_last_upload">Última subida: %1$s — %2$s</string>
+    <string name="set_no_upload">Aún no se ha subido — cada 5 min</string>
+    <string name="set_upload_off">La subida está desactivada</string>
+
+    <string name="set_backup">COPIA DE SEGURIDAD</string>
+    <string name="set_backup_text">Guarda todo el historial de glucosa como archivo. La importación vuelve a añadir los valores de una copia — los valores que ya existen se omiten.</string>
+    <string name="set_export_btn">Exportar</string>
+    <string name="set_import_btn">Importar</string>
+    <string name="set_exported">%1$d valores guardados</string>
+    <string name="set_export_err">Error de exportación: %1$s</string>
+    <string name="set_imported">%1$d valores nuevos importados</string>
+    <string name="set_import_err">Error de importación: %1$s</string>
+
+    <string name="set_language">IDIOMA</string>
+    <string name="set_language_hint">Se aplica de inmediato. También se puede elegir en los ajustes del sistema.</string>
+    <string name="lang_system">Sistema</string>
+
+    <string name="set_sensor">SENSOR</string>
+    <string name="set_sensor_hint">Qué sensor CGM usar. Al cambiar se desconecta el sensor actual.</string>
+    <string name="set_aidex_hint">AiDEX se identifica por el número de serie (SN) de la caja o el código QR — sin PIN. Introduce el SN y pulsa Iniciar.</string>
+    <string name="set_aidex_pair">Sensor nuevo</string>
+    <string name="set_calib">CALIBRACIÓN</string>
+    <string name="set_calib_hint">Introduce una medición manual (punción) — la app usa la diferencia con el valor actual del sensor como corrección para los valores siguientes. Se guarda por sensor.</string>
+    <string name="set_calib_status">Actual: %1$s mg/dL   ·   Corrección: %2$s mg/dL</string>
+    <string name="set_calib_label">Medición (mg/dL)</string>
+    <string name="set_calib_do">Calibrar</string>
+    <string name="set_calib_reset">Restablecer</string>
+    <string name="set_aidex_sn_label">Número de serie (SN)</string>
+    <string name="set_new_sensor">Nuevo sensor</string>
+    <string name="set_new_sensor_text">Descarta la vinculación anterior y reconecta con el código de vinculación introducido. El historial de glucosa se conserva.</string>
+    <string name="common_cancel">Cancelar</string>
+    <string name="theme_title">Apariencia</string>
+    <string name="theme_system">Sistema</string>
+    <string name="theme_light">Claro</string>
+    <string name="theme_dark">Oscuro</string>
+    <string name="set_clear_history">Borrar historial</string>
+    <string name="med_section">Eventos</string>
+    <string name="med_add">+ Evento</string>
+    <string name="med_none">Aún no hay registros</string>
+    <string name="med_which">¿Qué evento?</string>
+    <string name="med_dose">Dosis</string>
+    <string name="med_when">Hora</string>
+    <string name="med_now">Ahora</string>
+    <string name="med_min_ago">hace %1$d min</string>
+    <string name="med_custom_min">Minutos</string>
+    <string name="med_save">Registrar</string>
+    <string name="med_custom">Otro…</string>
+    <string name="med_manage">Gestionar eventos</string>
+    <string name="med_manage_hint">Nombre y dosis predeterminadas (separadas por comas).</string>
+    <string name="med_name">Nombre</string>
+    <string name="med_doses">Dosis, p. ej. 25 mg, 100 mg</string>
+    <string name="med_add_kind">Añadir</string>
+    <string name="info_disclaimer_title">Aviso</string>
+    <string name="info_no_med">Pebbels no es un producto sanitario y no sustituye el consejo ni el tratamiento médico; solo muestra los valores del sensor.</string>
+    <string name="info_optimized">Optimizado para Dexcom G7 y Dexcom ONE+.</string>
+</resources>

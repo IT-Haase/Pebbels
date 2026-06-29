@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- English translation. Default/fallback language is German (values/). -->
+<resources>
+    <string name="app_name">Pebbels APP</string>
+
+    <string name="nav_values">Values</string>
+    <string name="nav_info">Info</string>
+    <string name="tab_stats">Statistics</string>
+    <string name="tab_settings">Settings</string>
+
+    <string name="values_history">HISTORY</string>
+    <string name="values_count">%1$d values (%2$d h)</string>
+    <string name="values_last">Last value: %1$s</string>
+
+    <string name="stats_range">PERIOD</string>
+    <string name="stats_empty">No values in this period yet</string>
+    <string name="stats_metrics">METRICS</string>
+    <string name="stats_mean">Mean</string>
+    <string name="stats_sd">Std deviation</string>
+    <string name="stats_cv">Coefficient of variation</string>
+    <string name="stats_count">Values</string>
+    <string name="stats_gmi">GMI (human)</string>
+    <string name="stats_gmi_note">GMI is a human-specific approximation and only a rough indication for dogs.</string>
+
+    <string name="info_title">About Pebbels</string>
+    <string name="info_hello">Hi, I\'m Pebbels</string>
+    <string name="info_dates">March 28, 2014 – May 25, 2026 †</string>
+    <string name="info_story1">This app was created for Pebbels — a French Bulldog who suffered from an insulinoma, an insulin-producing tumor of the pancreas. For many months, a CGM sensor and this app helped keep an eye on her blood sugar around the clock — and probably prevented several nighttime crises.</string>
+    <string name="info_story2">What her illness cost in experience and hard lessons should now help other dogs and their people — so that no one has to walk this path alone.</string>
+    <string name="info_more">LEARN MORE</string>
+    <string name="info_more_text">Pebbels\' whole story, honest experiences with insulinoma, glucose charts, nutrition, emergency knowledge and sensor tips:</string>
+    <string name="info_open_website">Open website</string>
+    <string name="info_free">Free, ad-free, no data collection.</string>
+
+    <string name="set_pair">PAIR SENSOR</string>
+    <string name="set_pin_label">Pairing code (4 digits)</string>
+    <string name="set_connection">CONNECTION</string>
+    <string name="set_handshake">Handshake phase %1$d</string>
+    <string name="common_start">Start</string>
+    <string name="common_stop">Stop</string>
+    <string name="set_switch">Switch</string>
+    <string name="set_reset">Reset</string>
+
+    <string name="set_bg">BACKGROUND OPERATION</string>
+    <string name="set_bg_text">So the app keeps measuring and sending data even when the screen is off, it must be excluded from battery optimization. Otherwise Android stops it in sleep mode.</string>
+    <string name="set_bg_ok">✓ Battery optimization is disabled — background operation is running.</string>
+    <string name="set_bg_warn">⚠ Battery optimization is still active — please disable it.</string>
+    <string name="set_bg_btn">Disable battery optimization</string>
+
+    <string name="set_tir">STATISTICS — TIME IN RANGE</string>
+    <string name="set_tir_low">Lower limit: %1$d mg/dL</string>
+    <string name="set_tir_high">Upper limit: %1$d mg/dL</string>
+
+    <string name="set_hypo">LOW-GLUCOSE ALARM</string>
+    <string name="set_hyper">HIGH-GLUCOSE ALARM</string>
+    <string name="set_threshold">Threshold: %1$d mg/dL</string>
+    <string name="set_alarm_behavior">ALARM BEHAVIOR</string>
+    <string name="set_repeat">Repeat interval: %1$d min</string>
+    <string name="set_sound">Sound</string>
+    <string name="set_vibration">Vibration</string>
+    <string name="set_alarm_test">Alarm self-test</string>
+    <string name="set_stop_alarm">Stop</string>
+    <string name="set_alarm_test_hint">Real test: sends a synthetic low-glucose value through the complete alarm logic (threshold, evaluation, sound, vibration) — just like a real reading. Sound stops after max. 5 s or via Stop.</string>
+
+    <string name="set_cloud">CLOUD UPLOAD</string>
+    <string name="set_cloud_text">Sends the last 6 hours to your personal web dashboard every 5 minutes, so you can see the values on the go too. Scan the QR code to open the dashboard:</string>
+    <string name="set_dash_open">Open dashboard</string>
+    <string name="set_share_link">Share link</string>
+    <string name="set_dash_share_title">Share dashboard link</string>
+    <string name="set_last_upload">Last upload: %1$s — %2$s</string>
+    <string name="set_no_upload">No upload yet — runs every 5 min</string>
+    <string name="set_upload_off">Upload is disabled</string>
+
+    <string name="set_backup">BACK UP DATA</string>
+    <string name="set_backup_text">Saves the complete glucose history as a file. Import adds values back from a backup — values that already exist are skipped.</string>
+    <string name="set_export_btn">Export</string>
+    <string name="set_import_btn">Import</string>
+    <string name="set_exported">%1$d values saved</string>
+    <string name="set_export_err">Export error: %1$s</string>
+    <string name="set_imported">%1$d new values imported</string>
+    <string name="set_import_err">Import error: %1$s</string>
+
+    <string name="set_language">LANGUAGE</string>
+    <string name="set_language_hint">Applied immediately. Also selectable in the system settings.</string>
+    <string name="lang_system">System</string>
+
+    <string name="set_sensor">SENSOR</string>
+    <string name="set_sensor_hint">Which CGM sensor to use. Switching disconnects the current sensor.</string>
+    <string name="set_aidex_hint">AiDEX is identified by the serial number (SN) on the box / QR code — no PIN needed. Enter the SN, then Start.</string>
+    <string name="set_aidex_pair">New sensor</string>
+    <string name="set_calib">CALIBRATION</string>
+    <string name="set_calib_hint">Enter a manual reading (fingerstick) — the app uses the difference to the current sensor value as a correction for all following values. Stored per sensor.</string>
+    <string name="set_calib_status">Current: %1$s mg/dL   ·   Correction: %2$s mg/dL</string>
+    <string name="set_calib_label">Reading (mg/dL)</string>
+    <string name="set_calib_do">Calibrate</string>
+    <string name="set_calib_reset">Reset</string>
+    <string name="set_aidex_sn_label">Serial number (SN)</string>
+    <string name="set_new_sensor">New sensor</string>
+    <string name="set_new_sensor_text">Discards the old pairing and reconnects using the pairing code you entered. The glucose history is kept.</string>
+    <string name="common_cancel">Cancel</string>
+</resources>

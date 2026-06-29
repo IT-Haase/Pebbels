@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Bluetooth (Android 12+) -->
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <uses-permission
+        android:name="android.permission.BLUETOOTH_SCAN"
+        android:usesPermissionFlags="neverForLocation"
+        tools:targetApi="s" />
+
+    <!-- Bluetooth (legacy, Android 11 and below) -->
+    <uses-permission android:name="android.permission.BLUETOOTH"       android:maxSdkVersion="30" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" android:maxSdkVersion="30" />
+    <uses-permission
+        android:name="android.permission.ACCESS_FINE_LOCATION"
+        android:maxSdkVersion="30" />
+
+    <!-- Kamera: PIN-OCR (Dexcom) + Barcode-Scan (AiDEX-SN) -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera.any" android:required="false" />
+
+    <!-- Background service (for staying connected when screen is off) -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission
+        android:name="android.permission.FOREGROUND_SERVICE_CONNECTED_DEVICE"
+        tools:targetApi="34" />
+
+    <!-- Notification (ab Android 13 Pflicht, ohne dürfte der Service-Channel
+         keine Notification zeigen und Android killt den Foreground-Service). -->
+    <uses-permission
+        android:name="android.permission.POST_NOTIFICATIONS"
+        tools:targetApi="33" />
+
+    <!-- Internet — für den Cloud-Upload der Werte ans Pebbels-Dashboard. -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!-- Wakelock — hält die CPU wach, damit der 5-Minuten-Upload-Takt und
+         die BLE-Verarbeitung auch bei ausgeschaltetem Bildschirm laufen.
+         Ohne das setzt Android im Doze-Modus Timer + Netzwerk aus. -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <!-- Vibration für den Hypo-/Hyper-Alarm. -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <!-- Erlaubt der App, den User um Ausnahme von der Akku-Optimierung zu
+         bitten. Ohne diese Ausnahme drosseln/killen viele Hersteller-ROMs
+         den Foreground-Service, sobald der Bildschirm aus ist. -->
+    <uses-permission
+        android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+
+    <!-- BLE is required, not just preferred -->
+    <uses-feature
+        android:name="android.hardware.bluetooth_le"
+        android:required="true" />
+
+    <application
+        android:allowBackup="false"
+        android:localeConfig="@xml/locales_config"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@android:style/Theme.Material.Light.NoActionBar"
+        tools:targetApi="31">
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Foreground-Service hält BLE-Verbindung am Leben, auch wenn der
+             User die App aus Recents wischt. foregroundServiceType MUSS
+             angegeben sein ab Android 14. -->
+        <service
+            android:name=".service.G7MonitorService"
+            android:enabled="true"
+            android:exported="false"
+            android:foregroundServiceType="connectedDevice" />
+    </application>
+</manifest>

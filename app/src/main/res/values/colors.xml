@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Hintergrundfarbe des App-Icons (Adaptive Icon) -
+         aus dem Bodenton des Hundefotos gesampelt. -->
+    <color name="ic_launcher_bg">#68583D</color>
+</resources>

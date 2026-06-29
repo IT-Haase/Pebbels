@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Unterstützte App-Sprachen. Erweiterbar: für eine neue Sprache
+  hier eine <locale>-Zeile ergänzen und eine passende
+  res/values-XX/strings.xml anlegen.
+-->
+<locale-config xmlns:android="http://schemas.android.com/apk/res/android">
+    <locale android:name="en" />
+    <locale android:name="de" />
+    <locale android:name="es" />
+</locale-config>
