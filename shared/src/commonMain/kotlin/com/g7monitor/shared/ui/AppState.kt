@@ -31,6 +31,8 @@ object AppState {
     var deviceAddress by mutableStateOf<String?>(null)
     var handshakePhase by mutableStateOf(-1)
     var pin by mutableStateOf("")
+    var sensorType by mutableStateOf("dexcom")   // "dexcom" | "aidex"
+    var aidexSerial by mutableStateOf("")
     var backfillCount by mutableStateOf(0)
     var sensorStartMs by mutableStateOf(0L)   // Sensor-Start (für Ablauf-Hinweis auf der Startseite); 0 = unbekannt
     val history = mutableStateListOf<GlucosePoint>()
@@ -88,20 +90,26 @@ object AppState {
     var onDisconnect: () -> Unit = {}
     var onHardReset: () -> Unit = {}
     var onCalibrate: (Int) -> Unit = {}
+    var onCalibrateReset: () -> Unit = {}            // Offset auf 0 + persistieren (plattformspezifisch)
     var onClearHistory: () -> Unit = {}
     var onAlarmTest: () -> Unit = {}
     var onOpenUrl: (String) -> Unit = {}
     var onShareUrl: (String) -> Unit = {}
     var onExport: () -> Unit = {}
     var onImport: () -> Unit = {}
+    var onSensorTypeChange: (String) -> Unit = {}   // "dexcom"/"aidex" -> Plattform persistiert den Typ
+    var onScanSerial: () -> Unit = {}               // Plattform öffnet SN-Kamera-Scan, setzt aidexSerial
 
     // --- vom Plattform-Treiber aufgerufen ---
     fun pushLive(mgdl: Int, rate: Double, atMs: Long) {
-        this.lastGlucose = mgdl; this.rate = rate; this.lastGlucoseAt = atMs; this.live = true
-        history.add(GlucosePoint(atMs, mgdl, rate.toFloat()))
+        val cal = (mgdl + calibOffset).coerceIn(10, 600)   // Kalibrier-Offset anwenden (wie Android)
+        this.lastGlucose = cal; this.rate = rate; this.lastGlucoseAt = atMs; this.live = true
+        history.add(GlucosePoint(atMs, cal, rate.toFloat()))
         CloudUploader.maybeUpload()
     }
-    fun pushBackfill(atMs: Long, v: Int, r: Float = 0f) { history.add(GlucosePoint(atMs, v, r)); backfillCount += 1 }
+    fun pushBackfill(atMs: Long, v: Int, r: Float = 0f) {
+        history.add(GlucosePoint(atMs, (v + calibOffset).coerceIn(10, 600), r)); backfillCount += 1
+    }
     /** Sensor-Startzeit setzen (von der Plattform) — nur bei echter Änderung + persistieren. */
     fun updateSensorStart(ms: Long) {
         if (ms > 0L && ms != sensorStartMs) { sensorStartMs = ms; Persistence.saveSensorStart() }

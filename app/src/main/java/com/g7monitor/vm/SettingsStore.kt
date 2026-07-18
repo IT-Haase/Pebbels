@@ -56,7 +56,7 @@ data class SettingsState(
     val uploadEnabled: Boolean = false,
     val cloudUuid: String = "",
 
-    // --- Aktiver Sensor-Typ (aktuell nur Dexcom) ---
+    // --- Aktiver Sensor-Typ (Dexcom / AiDEX) ---
     val sensorType: SensorType = SensorType.DexcomG7,
 
     // --- Kalibrierung: Offset (mg/dL) für den AKTUELLEN Sensor-Typ ---

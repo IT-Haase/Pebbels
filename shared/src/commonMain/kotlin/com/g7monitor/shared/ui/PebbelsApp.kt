@@ -14,6 +14,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Pets
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.PhotoCamera
 import androidx.compose.material.icons.filled.ShowChart
 import androidx.compose.material.icons.outlined.BarChart
 import androidx.compose.material3.*
@@ -110,7 +111,8 @@ fun PebbelsApp() {
             listOf(AppState.language, AppState.themeMode, AppState.windowHours, AppState.statsRangeHours, AppState.tirLow, AppState.tirHigh,
                 AppState.hypoEnabled, AppState.hypoThreshold, AppState.hyperEnabled, AppState.hyperThreshold,
                 AppState.alarmRepeatMin, AppState.alarmSound, AppState.alarmVibrate, AppState.calibOffset,
-                AppState.uploadEnabled, AppState.cloudUuid, AppState.pin)
+                AppState.uploadEnabled, AppState.cloudUuid, AppState.pin,
+                AppState.sensorType, AppState.aidexSerial)
         }.collect { Persistence.saveSettings() }
     }
     val live = AppState.live && AppState.lastGlucose != null
@@ -183,21 +185,23 @@ private fun RowScope.navItem(sel: Boolean, onClick: () -> Unit, icon: ImageVecto
 
 // ---------------- Werte ----------------
 /** Dezenter Sensor-Ablauf-Hinweis direkt unter dem aktuellen Wert — kein Alarm,
- *  kein Popup. G7/ONE+: 10 Tage Sitzung + 12 h Ersatzzeit. 0 = unbekannt → nichts. */
+ *  kein Popup. G7/ONE+: 10 Tage + 12 h Ersatzzeit; AiDEX: 14 Tage. 0 = unbekannt → nichts. */
 @Composable private fun SensorBadge() {
     val start = AppState.sensorStartMs
     if (start <= 0L) return
     val elapsed = currentTimeMillis() - start
     if (elapsed < 0L) return
     val dayMs = 86_400_000L
-    val totalMs = 10L * dayMs              // Sitzungsdauer
-    val graceMs = 12L * 3_600_000L         // Ersatzzeit danach
+    val isAidex = AppState.sensorType == "aidex"
+    val totalDays = if (isAidex) 14 else 10             // AiDEX 14 Tage, G7/ONE+ 10 Tage
+    val totalMs = totalDays * dayMs
+    val graceMs = if (isAidex) 0L else 12L * 3_600_000L // AiDEX: keine Ersatzzeit
     val (txt, col) = when {
         elapsed >= totalMs + graceMs -> tr("sensor_expired") to RED
         elapsed >= totalMs           -> tr("sensor_grace") to RED
         else -> {
-            val day = (elapsed / dayMs).toInt() + 1            // Tag 1..10
-            tr("sensor_day", day) to (if (elapsed >= totalMs - dayMs) AMBER else DIM)
+            val day = (elapsed / dayMs).toInt() + 1
+            tr("sensor_day", day, totalDays) to (if (elapsed >= totalMs - dayMs) AMBER else DIM)
         }
     }
     Spacer(Modifier.height(6.dp))
@@ -350,7 +354,7 @@ private fun GlucoseChart(points: List<GlucosePoint>, meds: List<MedEvent>, windo
         drawRect(AMBER.copy(alpha = 0.10f), Offset(padL, yOf(nLow)), Size(plotW, yOf(okLow) - yOf(nLow)))
         drawRect(AMBER.copy(alpha = 0.10f), Offset(padL, yOf(okHigh)), Size(plotW, yOf(nHigh) - yOf(okHigh)))
         drawRect(GREEN.copy(alpha = 0.18f), Offset(padL, yOf(nHigh)), Size(plotW, yOf(nLow) - yOf(nHigh)))
-        listOf(50, 100, 150, 200, 250).forEach { v ->
+        listOf(50, 100, 150, 200, 250, 300).forEach { v ->
             val y = yOf(v.toFloat())
             drawLine(FAINT, Offset(padL, y), Offset(w - padR, y), 1f)
             val m = tm.measure("$v", TextStyle(color = DIM, fontSize = 9.sp))
@@ -475,13 +479,39 @@ private fun SettingsTab() {
         // Sensor koppeln
         card {
             label(tr("set_pair"))
-            OutlinedTextField(
-                value = AppState.pin, onValueChange = { AppState.pin = it.filter { c -> c.isDigit() }.take(4) },
-                label = { Text(tr("set_pin_label"), color = DIM) }, singleLine = true, enabled = !AppState.active,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number), modifier = Modifier.fillMaxWidth(),
-                colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = GREEN, unfocusedBorderColor = FAINT,
-                    focusedTextColor = TEXT, unfocusedTextColor = TEXT, cursorColor = GREEN)
-            )
+            // Sensor-Umschalter (Dexcom / AiDEX) — nur wechselbar, solange nichts läuft.
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                langChip("Dexcom", AppState.sensorType != "aidex") {
+                    if (!AppState.active) { AppState.sensorType = "dexcom"; AppState.onSensorTypeChange("dexcom") }
+                }
+                langChip("AiDEX", AppState.sensorType == "aidex") {
+                    if (!AppState.active) { AppState.sensorType = "aidex"; AppState.onSensorTypeChange("aidex") }
+                }
+            }
+            if (AppState.sensorType == "aidex") {
+                // AiDEX: Seriennummer (SN) mit Kamera-Scan als Symbol IM Feld — keine PIN.
+                OutlinedTextField(
+                    value = AppState.aidexSerial,
+                    onValueChange = { AppState.aidexSerial = it.uppercase().filter { c -> c.isLetterOrDigit() }.take(10) },
+                    label = { Text(tr("set_aidex_sn_label"), color = DIM) }, singleLine = true, enabled = !AppState.active,
+                    trailingIcon = {
+                        IconButton(onClick = { AppState.onScanSerial() }, enabled = !AppState.active) {
+                            Icon(Icons.Filled.PhotoCamera, contentDescription = "SN scannen", tint = GREEN)
+                        }
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = GREEN, unfocusedBorderColor = FAINT,
+                        focusedTextColor = TEXT, unfocusedTextColor = TEXT, cursorColor = GREEN)
+                )
+            } else {
+                OutlinedTextField(
+                    value = AppState.pin, onValueChange = { AppState.pin = it.filter { c -> c.isDigit() }.take(4) },
+                    label = { Text(tr("set_pin_label"), color = DIM) }, singleLine = true, enabled = !AppState.active,
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number), modifier = Modifier.fillMaxWidth(),
+                    colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = GREEN, unfocusedBorderColor = FAINT,
+                        focusedTextColor = TEXT, unfocusedTextColor = TEXT, cursorColor = GREEN)
+                )
+            }
             AppState.deviceName?.let { Text(it, color = TEXT, fontSize = 15.sp) }
             if (AppState.handshakePhase >= 0) Text(tr("set_handshake", AppState.handshakePhase), color = DIM, fontSize = 11.sp, fontFamily = FontFamily.Monospace)
             Text(AppState.status, color = DIM, fontSize = 11.sp, fontFamily = FontFamily.Monospace)
@@ -507,7 +537,7 @@ private fun SettingsTab() {
                 greenButton(tr("set_calib_do"), calibInput.toIntOrNull() != null && AppState.lastGlucose != null) {
                     calibInput.toIntOrNull()?.let { AppState.onCalibrate(it); calibInput = "" }
                 }
-                greenButton(tr("set_calib_reset"), AppState.calibOffset != 0) { AppState.calibOffset = 0 }
+                greenButton(tr("set_calib_reset"), AppState.calibOffset != 0) { AppState.onCalibrateReset() }
             }
         }
         // TIR

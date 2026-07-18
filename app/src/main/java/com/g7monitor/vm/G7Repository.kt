@@ -67,6 +67,9 @@ object G7Repository {
     // letzter UNkalibrierter Sensorwert (für die Offset-Berechnung beim Kalibrieren)
     @Volatile private var lastRawGlucose: Int? = null
     @Volatile private var initialized = false
+    @Volatile var aidexSerial: String = ""   // vom UI (SN-Feld) gespiegelt — für den AiDEX-Treiber
+    @Volatile var aidexNewestStoredMs: Long = 0L   // neuester gespeicherter AiDEX-Wert (Backfill-Wiederaufsetzen)
+    @Volatile var aidexSensorStartMs: Long = 0L    // AiDEX-Sensorstart (ms) — für den Ablauf-Hinweis (14 Tage)
 
     // --- Hypo-/Hyper-Alarm Throttling ---
     // Wir wollen nicht bei JEDEM 5-Minuten-Paket denselben Alarm feuern,
@@ -89,6 +92,7 @@ object G7Repository {
         readings = ReadingsStore(app)
         val initial = readings!!.load()
         knownTimes.addAll(initial.map { it.timeMs })
+        aidexNewestStoredMs = initial.filter { it.sensor == "aidex" }.maxOfOrNull { it.timeMs } ?: 0L
         if (initial.isNotEmpty()) {
             val last = initial.last()
             val ageMs = System.currentTimeMillis() - last.timeMs
@@ -187,6 +191,13 @@ object G7Repository {
     fun startScan() {
         val ctx = appCtx ?: return
         val s = _state.value
+        // Nicht-Dexcom-Sensoren (AiDEX X / LinX …) laufen über ihren eigenen,
+        // vom Dexcom-Flow vollständig getrennten Start-Pfad.
+        val activeType = settings.state.value.sensorType
+        if (activeType != SensorType.DexcomG7) {
+            startAlternativeSensor(activeType)
+            return
+        }
         if (!s.nativeLoaded) {
             _state.value = s.copy(
                 connection = ConnectionState.Error,
@@ -222,7 +233,7 @@ object G7Repository {
         startForegroundService(ctx)
         val pinBytes = s.pin.map { it.code.toByte() }.toByteArray()
         driver?.stop()
-        val c = SensorFactory.create(SensorType.DexcomG7, ctx, pinBytes)
+        val c = SensorFactory.create(SensorType.DexcomG7, ctx, pinBytes, "")
         c.addListener { ev -> handleEvent(ev) }
         driver = c
         _state.value = s.copy(
@@ -237,6 +248,32 @@ object G7Repository {
             _state.value = _state.value.copy(
                 connection = ConnectionState.Error,
                 statusMessage = "Fehler: ${t.message ?: t::class.java.simpleName}"
+            )
+        }
+    }
+
+    /** Start-Pfad für Nicht-Dexcom-Sensoren (aktuell AiDEX X / LinX).
+     *  Kein PIN nötig; der Treiber übernimmt Scan, Auth und Decodierung in
+     *  seinem eigenen Paket (ble.aidexx). Bewusst getrennt vom Dexcom-Flow,
+     *  damit dort nichts anzufassen ist. */
+    private fun startAlternativeSensor(type: SensorType) {
+        val ctx = appCtx ?: return
+        startForegroundService(ctx)
+        driver?.stop()
+        val serial = aidexSerial
+        val c = SensorFactory.create(type, ctx, ByteArray(0), serial)
+        c.addListener { ev -> handleEvent(ev) }
+        driver = c
+        _state.value = _state.value.copy(
+            connection = ConnectionState.Scanning,
+            statusMessage = "Scanne nach ${type.label} …",
+            scanLog = emptyList(),
+        )
+        runCatching { c.start() }.onFailure { t ->
+            DebugLog.e(TAG, "start() (${type.label}) fehlgeschlagen", t)
+            _state.value = _state.value.copy(
+                connection = ConnectionState.Error,
+                statusMessage = "Fehler: ${t.message ?: t::class.java.simpleName}",
             )
         }
     }
@@ -297,6 +334,7 @@ object G7Repository {
     /** Den gespeicherten Verlauf löschen. */
     fun clearSensorHistory(sensor: String) {
         readings?.clearSensor(sensor)
+        if (sensor == "aidex") aidexNewestStoredMs = 0L   // Resume zurücksetzen → nächstes Mal alles neu
         // In-Memory-History und Duplikat-Index ebenfalls bereinigen.
         val kept = _state.value.history.filter { it.sensor != sensor }
         knownTimes.clear()
@@ -566,14 +604,14 @@ object G7Repository {
             )
             is CgmEvent.HandshakeAdvanced -> s.copy(
                 connection = ConnectionState.Authenticating,
-                handshakePhase = ev.phase,
-                statusMessage = "Handshake Phase ${ev.phase}"
+                handshakePhase = ev.phase
             )
             is CgmEvent.Authenticated -> {
                 DebugLog.event(TAG, "Verbindung OK${ev.deviceName?.let { " ($it)" } ?: ""}")
                 s.copy(
                     connection = ConnectionState.Authenticated,
                     deviceName = ev.deviceName,
+                    handshakePhase = -1,
                     statusMessage = "Authentifiziert (${ev.deviceName ?: "?"})"
                 )
             }
@@ -584,10 +622,11 @@ object G7Repository {
                     timeMs = ev.reading.timestampMs,
                     mgdl = cal,
                     rateMgdlPerMin = ev.reading.rateMgdlPerMin,
-                    sensor = "dexcom",
+                    sensor = settings.state.value.sensorType.tag,
                 )
                 val isNew = r?.append(p, knownTimes) ?: false
                 if (isNew) knownTimes.add(p.timeMs)
+                if (isNew && p.sensor == "aidex") aidexNewestStoredMs = maxOf(aidexNewestStoredMs, p.timeMs)
                 val newHistory = if (isNew) (s.history + p).sortedBy { it.timeMs } else s.history
                 if (isNew && s.history.size % 64 == 0) r?.compactIfNeeded()
                 // Neuer Live-Wert — als sichtbares Event in den Debug-Tab.
@@ -611,10 +650,11 @@ object G7Repository {
                     timeMs = ev.reading.timestampMs,
                     mgdl = cal,
                     rateMgdlPerMin = ev.reading.rateMgdlPerMin,
-                    sensor = "dexcom",
+                    sensor = settings.state.value.sensorType.tag,
                 )
                 val isNew = r?.append(p, knownTimes) ?: false
                 if (isNew) knownTimes.add(p.timeMs)
+                if (isNew && p.sensor == "aidex") aidexNewestStoredMs = maxOf(aidexNewestStoredMs, p.timeMs)
                 val newHistory = if (isNew) (s.history + p).sortedBy { it.timeMs } else s.history
                 if (isNew && s.history.size % 64 == 0) r?.compactIfNeeded()
                 s.copy(
@@ -635,6 +675,7 @@ object G7Repository {
                     statusMessage = "Getrennt (status=${ev.status})"
                 )
             }
+            is CgmEvent.Info -> s.copy(statusMessage = ev.message)
             is CgmEvent.Error -> {
                 DebugLog.w(TAG, ev.message, ev.cause)
                 s.copy(

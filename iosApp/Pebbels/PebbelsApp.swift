@@ -16,6 +16,7 @@ struct PebbelsApp: App {
 final class Bridge {
     static let shared = Bridge()
     let g7 = G7Ble()
+    let aidex = AidexXBle()
     let notifDelegate = NotifDelegate()
     let importDelegate = ImportDelegate()
     func wire() {
@@ -30,12 +31,35 @@ final class Bridge {
         if AppState.shared.cloudUuid.isEmpty { AppState.shared.cloudUuid = UUID().uuidString }
         AppState.shared.cloudUuid = AppState.shared.cloudUuid.lowercased()   // Server-Regex verlangt Kleinbuchstaben
         AppState.shared.onConnect = { [weak self] in
-            self?.g7.start(pin: Array(AppState.shared.pin.utf8))
+            guard let self = self else { return }
+            if AppState.shared.sensorType == "aidex" {
+                self.aidex.start(serial: AppState.shared.aidexSerial)
+            } else {
+                self.g7.start(pin: Array(AppState.shared.pin.utf8))
+            }
         }
-        AppState.shared.onDisconnect = { [weak self] in self?.g7.stop() }
-        AppState.shared.onHardReset = { [weak self] in self?.g7.forgetSensor() }
+        AppState.shared.onDisconnect = { [weak self] in self?.g7.stop(); self?.aidex.stop() }
+        AppState.shared.onHardReset = { [weak self] in
+            if AppState.shared.sensorType == "aidex" { self?.aidex.forgetSensor() } else { self?.g7.forgetSensor() }
+        }
         AppState.shared.onClearHistory = { AppState.shared.clearHistory(); AppState.shared.backfillCount = 0; Persistence.shared.saveHistory() }
         AppState.shared.onAlarmTest = { Alarms.shared.test() }
+        AppState.shared.onSensorTypeChange = { type in AppState.shared.sensorType = type }
+        AppState.shared.onCalibrate = { target in
+            // Offset so setzen, dass der aktuelle Wert = target wird, und speichern.
+            guard let last = AppState.shared.lastGlucose?.intValue, last > 0 else { return }
+            AppState.shared.calibOffset = target.int32Value - Int32(last) + AppState.shared.calibOffset
+            Persistence.shared.saveSettings()
+        }
+        AppState.shared.onCalibrateReset = {
+            AppState.shared.calibOffset = 0
+            Persistence.shared.saveSettings()
+        }
+        AppState.shared.onScanSerial = {
+            guard let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                  let root = scene.windows.first?.rootViewController else { return }
+            AidexScanner.present(from: root) { sn in AppState.shared.aidexSerial = sn }
+        }
         AppState.shared.onOpenUrl = { url in
             if let u = URL(string: url) { UIApplication.shared.open(u) }
         }

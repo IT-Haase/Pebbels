@@ -40,13 +40,21 @@ object AndroidBridge {
         AppState.onConnect = { vm.startScan() }
         AppState.onDisconnect = { vm.stopScan() }
         AppState.onHardReset = { vm.forgetSensor() }
-        AppState.onClearHistory = { vm.clearSensorHistory("dexcom") }
+        AppState.onClearHistory = { vm.clearSensorHistory(AppState.sensorType) }
         AppState.onCalibrate = { mgdl -> vm.calibrate(mgdl) }
+        AppState.onCalibrateReset = { vm.clearCalibration() }
         AppState.onAlarmTest = { vm.runAlarmSelfTest() }
         AppState.onExport = onExport
         AppState.onImport = onImport
         AppState.onOpenUrl = onOpenUrl
         AppState.onShareUrl = onShareUrl
+        AppState.onSensorTypeChange = { tag ->
+            vm.updateSensorType(
+                if (tag == "aidex") com.g7monitor.ble.SensorType.AidexX
+                else com.g7monitor.ble.SensorType.DexcomG7
+            )
+        }
+        // onScanSerial setzt MainActivity (braucht Activity-Kontext für Kamera + Dialog).
 
         scope.launch { vm.state.collect { applyState(it) } }
         scope.launch { vm.settings.collect { applySettings(it) } }
@@ -63,9 +71,12 @@ object AndroidBridge {
                     AppState.hyperEnabled, AppState.hyperThreshold, AppState.alarmRepeatMin,
                     AppState.alarmSound, AppState.alarmVibrate, AppState.statsRangeHours,
                     AppState.uploadEnabled, AppState.windowHours, AppState.themeMode,
-                    AppState.language, AppState.pin,
+                    AppState.language, AppState.pin, AppState.aidexSerial,
                 )
-            }.collect { if (ready) pushSettings(vm) }
+            }.collect {
+                com.g7monitor.vm.G7Repository.aidexSerial = AppState.aidexSerial
+                if (ready) pushSettings(vm)
+            }
         }
     }
 
@@ -78,7 +89,10 @@ object AndroidBridge {
         AppState.lastGlucose = st.lastGlucose
         AppState.rate = st.rateMgdlPerMin?.toDouble() ?: 0.0
         AppState.lastGlucoseAt = st.lastGlucoseAt ?: 0L
-        AppState.updateSensorStart(DexSession.lastSensorStartMs)   // Sensor-Ablauf-Hinweis
+        AppState.updateSensorStart(   // Sensor-Ablauf-Hinweis: je nach aktivem Sensor
+            if (AppState.sensorType == "aidex") com.g7monitor.vm.G7Repository.aidexSensorStartMs
+            else DexSession.lastSensorStartMs
+        )
         AppState.deviceName = st.deviceName
         AppState.handshakePhase = st.handshakePhase
         AppState.windowHours = st.windowHours
@@ -100,6 +114,7 @@ object AndroidBridge {
         AppState.statsRangeHours = s.statsRangeHours
         AppState.uploadEnabled = s.uploadEnabled; AppState.cloudUuid = s.cloudUuid
         AppState.calibOffset = s.calibOffset
+        AppState.sensorType = s.sensorType.tag
         AppState.themeMode = s.themeMode; AppState.language = s.language
         ready = true
     }

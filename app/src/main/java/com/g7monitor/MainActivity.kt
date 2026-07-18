@@ -13,12 +13,14 @@ import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.mutableStateOf
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.g7monitor.alarm.HypoAlarm
 import com.g7monitor.shared.platform.androidPersistDir
 import com.g7monitor.shared.ui.AppState
 import com.g7monitor.shared.ui.PebbelsApp
+import com.g7monitor.ui.SnScanDialog
 import com.g7monitor.vm.G7Repository
 import com.g7monitor.vm.G7ViewModel
 import java.text.SimpleDateFormat
@@ -27,6 +29,7 @@ import java.util.Date
 class MainActivity : ComponentActivity() {
 
     private val vm: G7ViewModel by viewModels()
+    private val showScanner = mutableStateOf(false)
 
     private val permLauncher = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
@@ -88,8 +91,21 @@ class MainActivity : ComponentActivity() {
             },
         )
 
+        // Kamera-Scan der AiDEX-SN, ausgelöst aus der geteilten UI.
+        AppState.onScanSerial = { showScanner.value = true }
+
         // Dieselbe geteilte Oberfläche wie auf iOS.
-        setContent { MaterialTheme { PebbelsApp() } }
+        setContent {
+            MaterialTheme {
+                PebbelsApp()
+                if (showScanner.value) {
+                    SnScanDialog(
+                        onResult = { sn -> AppState.aidexSerial = sn; showScanner.value = false },
+                        onDismiss = { showScanner.value = false },
+                    )
+                }
+            }
+        }
     }
 
     override fun onResume() {

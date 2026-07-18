@@ -11,7 +11,7 @@
     <string name="values_history">HISTORY</string>
     <string name="values_count">%1$d values (%2$d h)</string>
     <string name="values_last">Last value: %1$s</string>
-    <string name="sensor_day">Sensor · day %1$d/10</string>
+    <string name="sensor_day">Sensor · day %1$d/%2$d</string>
     <string name="sensor_grace">Sensor expiring</string>
     <string name="sensor_expired">Sensor expired</string>
 
@@ -125,4 +125,13 @@
     <string name="info_disclaimer_title">Notice</string>
     <string name="info_no_med">Pebbels is not a medical device and does not replace medical advice or treatment — it only displays sensor readings.</string>
     <string name="info_optimized">Optimized for Dexcom G7 and Dexcom ONE+.</string>
+    <string name="aidex_scan_title">Scan serial number</string>
+    <string name="aidex_scan_perm">Camera access is required.</string>
+    <string name="aidex_scan_allow">Allow</string>
+    <string name="aidex_scan_hint">Point at the QR code on the box</string>
+    <string name="aidex_scan_recognized">Detected SN:</string>
+    <string name="aidex_scan_again">Again</string>
+    <string name="aidex_scan_apply">Apply</string>
+    <string name="sensor_released">Sensor released — now pairable on another device</string>
+    <string name="sensor_release_unconfirmed">Release unconfirmed</string>
 </resources>

@@ -13,8 +13,8 @@ android {
         applicationId = "app.pebbels"
         minSdk = 26          // Android 8.0; G7 requires BLE 4.2+
         targetSdk = 35
-        versionCode = 5
-        versionName = "1.1"
+        versionCode = 6
+        versionName = "1.2"
 
         // G7 target devices are 64-bit — don't bother building arm-v7 or x86.
         ndk { abiFilters += "arm64-v8a" }
@@ -92,6 +92,9 @@ dependencies {
     // sie ist nur aufgedruckt. ML-Kit-Texterkennung liest die große Zahl direkt.
     // On-device, offline, kostenlos (Apache/Google).
     implementation("com.google.mlkit:text-recognition:16.0.1")
+    // --- QR-Code der AiDEX-Seriennummer per Kamera lesen ---
+    implementation("com.google.mlkit:barcode-scanning:17.3.0")
+    testImplementation("junit:junit:4.13.2")
     // CameraX 1.4.x liefert 16-KB-ausgerichtete .so (libimage_processing_util_jni.so)
     // — nötig für Android 15+ / 16-KB-Seiten (Play-Store-Pflicht ab 01.11.2025).
     implementation("androidx.camera:camera-core:1.4.1")

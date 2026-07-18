@@ -71,6 +71,7 @@ class G7ViewModel(app: Application) : AndroidViewModel(app) {
     fun updateUpload(enabled: Boolean) = G7Repository.settings.updateUpload(enabled)
     fun updateTheme(mode: String) = G7Repository.settings.updateTheme(mode)
     fun updateLanguage(lang: String) = G7Repository.settings.updateLanguage(lang)
+    fun updateSensorType(type: com.g7monitor.ble.SensorType) = G7Repository.settings.updateSensorType(type)
 
     /** Echter Alarm-Selbsttest durch die komplette Auswerte-Kette. */
     fun runAlarmSelfTest(): String = G7Repository.runAlarmSelfTest()

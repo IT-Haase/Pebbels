@@ -27,6 +27,7 @@
 package com.g7monitor.util
 
 import android.util.Log
+import com.g7monitor.BuildConfig
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import java.text.SimpleDateFormat
@@ -68,7 +69,8 @@ object DebugLog {
      * nutzt `adb logcat`. Der Debug-Tab bleibt dadurch übersichtlich.
      */
     fun i(tag: String, msg: String) {
-        Log.i(tag, msg)
+        // Ausführliches Detail-Logging nur im Debug-Build — im Release nichts nach logcat.
+        if (BuildConfig.DEBUG) Log.i(tag, msg)
     }
 
     /**

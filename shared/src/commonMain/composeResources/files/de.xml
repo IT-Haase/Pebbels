@@ -18,7 +18,7 @@
     <string name="values_history">VERLAUF</string>
     <string name="values_count">%1$d Werte (%2$d h)</string>
     <string name="values_last">Letzter Wert: %1$s</string>
-    <string name="sensor_day">Sensor · Tag %1$d/10</string>
+    <string name="sensor_day">Sensor · Tag %1$d/%2$d</string>
     <string name="sensor_grace">Sensor läuft ab</string>
     <string name="sensor_expired">Sensor abgelaufen</string>
 
@@ -142,4 +142,13 @@
     <string name="info_disclaimer_title">Hinweis</string>
     <string name="info_no_med">Pebbels ist kein Medizinprodukt und ersetzt keine ärztliche Beratung oder Behandlung — es zeigt nur Sensorwerte an.</string>
     <string name="info_optimized">Optimiert für Dexcom G7 und Dexcom ONE+.</string>
+    <string name="aidex_scan_title">Seriennummer scannen</string>
+    <string name="aidex_scan_perm">Kamera-Zugriff wird benötigt.</string>
+    <string name="aidex_scan_allow">Erlauben</string>
+    <string name="aidex_scan_hint">Den QR-Code auf dem Karton anvisieren</string>
+    <string name="aidex_scan_recognized">Erkannte SN:</string>
+    <string name="aidex_scan_again">Nochmal</string>
+    <string name="aidex_scan_apply">Übernehmen</string>
+    <string name="sensor_released">Sensor freigegeben — jetzt am anderen Gerät koppelbar</string>
+    <string name="sensor_release_unconfirmed">Freigabe unbestätigt</string>
 </resources>

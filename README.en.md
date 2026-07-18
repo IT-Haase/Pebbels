@@ -2,7 +2,7 @@
 
 [Deutsch](README.md) · **English**
 
-**A sensor monitor for pets.** Pebbels reads the values of a **Dexcom G7 / Dexcom ONE+** sensor over Bluetooth and shows them at a glance — current value, history, trend, statistics and an event log. One shared codebase (Kotlin Multiplatform + Compose Multiplatform) for **iOS and Android**.
+**A sensor monitor for pets.** Pebbels reads the values of a **Dexcom G7 / Dexcom ONE+** or **AiDEX X / LinX** sensor over Bluetooth and shows them at a glance — current value, history, trend, statistics and an event log. One shared codebase (Kotlin Multiplatform + Compose Multiplatform) for **iOS and Android**.
 
 Born out of caring for a little French bulldog named **Pebbels**.
 
@@ -30,7 +30,9 @@ iPhone → App Store · Android → Google Play
 
 ## What it does
 
-- Reads **Dexcom G7 / Dexcom ONE+** over Bluetooth
+- Reads **Dexcom G7 / Dexcom ONE+** and **AiDEX X / LinX** over Bluetooth
+- Sensor switch in the settings · AiDEX serial number via **QR scan** or manual entry
+- AiDEX: readings every minute, sensor history backfill, 14-day runtime, sensor release for switching devices
 - Current value with trend arrow, history (6 hours to 3 weeks)
 - Statistics (time in the chosen range, average)
 - **Event log** with timestamps (e.g. feeding)
@@ -61,10 +63,10 @@ Open `iosApp/Pebbels.xcodeproj` in Xcode and build — the shared framework is g
 
 ## Roadmap / In progress
 
-- 🔬 **Aidex (AiDEX X):** support for the affordable **Aidex** CGM sensor is in progress — our own reverse engineering, our own code. Anyone who wants to help or follow along is very welcome!
+- ✅ **AiDEX X / LinX:** fully supported since version 1.2 — on iOS and Android, including QR scan of the serial number, sensor history backfill and sensor release for switching devices.
 - More pet / CGM sensors as their protocols become accessible.
 
-> Looking for an app that reads an **Aidex** or **Dexcom** sensor on a dog or cat? You're in the right place — and Aidex support is on the way.
+> Looking for an app that reads an **AiDEX** or **Dexcom** sensor on a dog or cat? You're in the right place — both are supported.
 
 ## Contributing
 
@@ -72,7 +74,7 @@ Pull requests are warmly welcome — extend the app, add sensors, improve the in
 
 ## Origin & license
 
-The Dexcom G7 handshake and decode logic is derived from **Juggluco** (© Jaap Korthals Altes), which is licensed under **GPL-3.0**. That is why Pebbels is also under **GPL-3.0**:
+The handshake and decode logic for **Dexcom G7** and for **AiDEX X** is derived from **Juggluco** (© Jaap Korthals Altes), which is licensed under **GPL-3.0**. That is why Pebbels is also under **GPL-3.0**:
 
 - The source stays open
 - Copyright and license notices must be preserved
@@ -84,4 +86,4 @@ Full license text: [LICENSE](LICENSE). Huge thanks to the Juggluco project — w
 
 Pebbels is **not a medical device** and is solely for personally observing your own animal. The app makes no diagnosis, gives no medical recommendations and makes no treatment decisions. It does not replace advice from a veterinarian or a medical professional.
 
-"Dexcom" is a trademark of its respective owners. This project is not affiliated with, nor endorsed by, Dexcom.
+"Dexcom" and "AiDEX" are trademarks of their respective owners. This project is not affiliated with, nor endorsed by, Dexcom or Microtech/AiDEX.

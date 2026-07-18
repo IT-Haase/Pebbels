@@ -35,7 +35,9 @@
 	<key>MinimumOSVersion</key>
 	<string>16.0</string>
 	<key>NSBluetoothAlwaysUsageDescription</key>
-	<string>Pebbels verbindet sich per Bluetooth mit deinem Dexcom-Sensor.</string>
+	<string>Pebbels verbindet sich per Bluetooth mit deinem Dexcom- oder AiDEX-Sensor.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Zum Einscannen der AiDEX-Seriennummer wird die Kamera benötigt.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
@@ -78,5 +80,6 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>CADisableMinimumFrameDurationOnPhone</key><true/>
 </dict>
 </plist>

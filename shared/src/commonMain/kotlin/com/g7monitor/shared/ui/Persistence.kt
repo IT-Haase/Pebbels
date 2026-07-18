@@ -32,6 +32,8 @@ object Persistence {
                 "uploadEnabled" -> AppState.uploadEnabled = v == "true"
                 "cloudUuid" -> if (v.isNotEmpty()) AppState.cloudUuid = v
                 "pin" -> AppState.pin = v
+                "sensorType" -> if (v.isNotEmpty()) AppState.sensorType = v
+                "aidexSerial" -> AppState.aidexSerial = v
             }
         }
         if (ver < 2) {   // einmalige Migration auf neue Standardwerte (Hypo 50, Hyper 200, TIR 60–160)
@@ -69,6 +71,8 @@ object Persistence {
             append("uploadEnabled=${AppState.uploadEnabled}\n")
             append("cloudUuid=${AppState.cloudUuid}\n")
             append("pin=${AppState.pin}\n")
+            append("sensorType=${AppState.sensorType}\n")
+            append("aidexSerial=${AppState.aidexSerial}\n")
         })
     }
 

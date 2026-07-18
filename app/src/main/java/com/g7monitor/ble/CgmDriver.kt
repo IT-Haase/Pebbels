@@ -62,4 +62,6 @@ sealed class CgmEvent {
     data class StaleGlucose(val ageSec: Int, val mgdl: Int) : CgmEvent()
     data class Disconnected(val status: Int) : CgmEvent()
     data class Error(val message: String, val cause: Throwable? = null) : CgmEvent()
+    /** Neutrale Statusmeldung (kein Fehler) — z. B. „Sensor freigegeben". */
+    data class Info(val message: String) : CgmEvent()
 }

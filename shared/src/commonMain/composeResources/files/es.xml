@@ -11,7 +11,7 @@
     <string name="values_history">HISTORIAL</string>
     <string name="values_count">%1$d valores (%2$d h)</string>
     <string name="values_last">Último valor: %1$s</string>
-    <string name="sensor_day">Sensor · día %1$d/10</string>
+    <string name="sensor_day">Sensor · día %1$d/%2$d</string>
     <string name="sensor_grace">Sensor por caducar</string>
     <string name="sensor_expired">Sensor caducado</string>
 
@@ -125,4 +125,13 @@
     <string name="info_disclaimer_title">Aviso</string>
     <string name="info_no_med">Pebbels no es un producto sanitario y no sustituye el consejo ni el tratamiento médico; solo muestra los valores del sensor.</string>
     <string name="info_optimized">Optimizado para Dexcom G7 y Dexcom ONE+.</string>
+    <string name="aidex_scan_title">Escanear número de serie</string>
+    <string name="aidex_scan_perm">Se necesita acceso a la cámara.</string>
+    <string name="aidex_scan_allow">Permitir</string>
+    <string name="aidex_scan_hint">Apunta al código QR de la caja</string>
+    <string name="aidex_scan_recognized">SN detectado:</string>
+    <string name="aidex_scan_again">De nuevo</string>
+    <string name="aidex_scan_apply">Aplicar</string>
+    <string name="sensor_released">Sensor liberado — ahora vinculable en otro dispositivo</string>
+    <string name="sensor_release_unconfirmed">Liberación sin confirmar</string>
 </resources>
